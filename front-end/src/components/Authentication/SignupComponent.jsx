@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import toast, { Toaster } from 'react-hot-toast';
+import { Hourglass } from 'react-loader-spinner';
 
 const SignupComponent = () => {
   const [usernameFieldError, setUsernameFieldError] = useState(null);
   const [passwordFieldError, setPasswordFieldError] = useState(null);
   const [seePassword, setSeePassword] = useState(false);
+  const { signup, loading, successMessage, errorMessage, resetMessage } =
+    useAuth();
+  const navigate = useNavigate();
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
   const passwordError = [
     'Password must be at least 6 characters long',
@@ -17,6 +23,7 @@ const SignupComponent = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
+    resetMessage();
     setUsernameFieldError(null);
     setPasswordFieldError(null);
     let formValid = true;
@@ -38,11 +45,24 @@ const SignupComponent = () => {
       setPasswordFieldError(passwordError);
       formValid = false;
     }
-    if (formValid) console.log({ username, password });
+    if (formValid) {
+      signup(username, password);
+    }
   };
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      const timer = setTimeout(() => navigate('/login'), 3000);
+      return () => clearTimeout(timer);
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+  }, [successMessage, errorMessage, navigate]);
   return (
     <>
       <section>
+        <Toaster position='top-right' reverseOrder={false} />
         <div className='flex justify-center items-center h-[80vh]'>
           <div className='w-[600px] rounded-[15px] shadow-2xl p-[25px]'>
             <h1 className='text-3xl font-bold '>Lets Plan A Productive Day</h1>
@@ -105,7 +125,18 @@ const SignupComponent = () => {
                 )}
               </div>
               <button className='px-[25px] py-[12px] rounded-[10px] text-lg font-bold bg-lime-900 mt-[25px] text-white'>
-                Signup
+                {loading ? (
+                  <Hourglass
+                    visible={true}
+                    height='20'
+                    width='20'
+                    ariaLabel='hourglass-loading'
+                    wrapperStyle={{ marginRight: '10px' }}
+                    colors={['#306cce', '#72a1ed']}
+                  />
+                ) : (
+                  'Signup'
+                )}
               </button>
             </form>
             <p className='text-[16px]  text-blue-500 mt-[14px]'>
