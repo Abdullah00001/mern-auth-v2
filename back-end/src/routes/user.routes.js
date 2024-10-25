@@ -9,12 +9,14 @@ import {
   authFieldValidation,
   isLoginUserExist,
   isSignupUserExist,
+  passwordCheck,
 } from '../middlewares/auth.middlewares.js';
 
 /* ====================================
 -------------Controllers---------------
 =======================================*/
 import { signupController } from '../controllers/signup.controllers.js';
+import signinController from '../controllers/signin.controllers.js';
 
 /* ======================================
 -------------------Routes----------------
@@ -22,5 +24,8 @@ import { signupController } from '../controllers/signup.controllers.js';
 router
   .route('/signup')
   .post(authFieldValidation, isSignupUserExist, signupController);
+router
+  .route('/login')
+  .post(authFieldValidation, isLoginUserExist, passwordCheck, signinController);
 
 export default router;
