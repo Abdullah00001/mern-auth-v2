@@ -7,8 +7,10 @@ const router = Router();
 =======================================*/
 import {
   authFieldValidation,
+  checkRefreshToken,
   isLoginUserExist,
   isSignupUserExist,
+  isUserAuthenticate,
   passwordCheck,
 } from '../middlewares/auth.middlewares.js';
 
@@ -17,6 +19,8 @@ import {
 =======================================*/
 import { signupController } from '../controllers/signup.controllers.js';
 import signinController from '../controllers/signin.controllers.js';
+import authenticatedController from '../controllers/authenticated.controllers.js';
+import refreshTokensController from '../controllers/refreshTokens.controllers.js';
 
 /* ======================================
 -------------------Routes----------------
@@ -27,5 +31,15 @@ router
 router
   .route('/login')
   .post(authFieldValidation, isLoginUserExist, passwordCheck, signinController);
+
+/* ======================================
+--------------Protected Routes-----------
+======================================== */
+
+router
+  .route('/isauthenticated')
+  .get(isUserAuthenticate, authenticatedController);
+
+router.route('/refreshtokens').post(checkRefreshToken, refreshTokensController);
 
 export default router;
