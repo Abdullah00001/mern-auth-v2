@@ -78,7 +78,7 @@ export const passwordCheck = async (req, res, next) => {
       return next();
     }
     return res
-      .status(400)
+      .status(401)
       .json(new errorApiResponse('Incorrect Password', null));
   } catch (error) {
     console.error(error.message);

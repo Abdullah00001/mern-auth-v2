@@ -21,6 +21,7 @@ import { signupController } from '../controllers/signup.controllers.js';
 import signinController from '../controllers/signin.controllers.js';
 import authenticatedController from '../controllers/authenticated.controllers.js';
 import refreshTokensController from '../controllers/refreshTokens.controllers.js';
+import LogoutController from '../controllers/logout.controllers.js';
 
 /* ======================================
 -------------------Routes----------------
@@ -39,6 +40,8 @@ router
 router
   .route('/isauthenticated')
   .get(isUserAuthenticate, authenticatedController);
+
+router.route('/logout').post(isUserAuthenticate, LogoutController);
 
 router.route('/refreshtokens').post(checkRefreshToken, refreshTokensController);
 
