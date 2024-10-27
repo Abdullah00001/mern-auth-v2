@@ -135,14 +135,14 @@ const LoginComponent = () => {
                     colors={['#306cce', '#72a1ed']}
                   />
                 ) : (
-                  'Signup'
+                  'Signin'
                 )}
               </button>
             </form>
             <p className='text-[16px]  text-blue-500 mt-[14px]'>
               Didnt Have An Account! Please{' '}
               <span className='font-bold'>
-                <Link to={'/signup'}>Signin</Link>
+                <Link to={'/signup'}>Sign Up</Link>
               </span>
             </p>
           </div>
