@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import AuthenticateNav from '../Header/AuthenticateNav';
+import UnauthenticateNav from '../Header/UnauthenticateNav';
 
 const Header = () => {
-
+  const { user } = useAuth();
   return (
     <>
       <section>
@@ -14,14 +17,9 @@ const Header = () => {
               </h1>
             </div>
             <div className='w-[70%]'>
-                <ul className="flex w-full justify-end items-center gap-[20px]">
-                    <li className='text-xl font-bold'>
-                        <Link to={"/signup"}>Signup</Link>
-                    </li>
-                    <li className='text-xl font-bold'>
-                        <Link to={"/login"}>Login</Link>
-                    </li>
-                </ul>
+              <ul className='flex w-full justify-end items-center gap-[20px]'>
+                {user ? <AuthenticateNav /> : <UnauthenticateNav />}
+              </ul>
             </div>
           </div>
         </div>
